@@ -1,0 +1,95 @@
+#include<iostream>
+#include<chrono>
+#include<thread>
+
+#define REPEAT_COUNT 1000000.0
+using namespace std;
+double gettime() {
+	clock_t time = clock();
+	if (time != (clock_t)-1) {
+		return ((double)time / (double)CLOCKS_PER_SEC);
+
+	}return 0;
+}
+int min(int x, int y) {
+	int min;
+	if (x <= y) {
+		min = x;
+	}
+	else {
+		min = y;
+	}
+	return min;
+}
+int max(int x, int y) {
+	int max;
+	if (x >= y) {
+		max = x;
+	}
+	else {
+		max = y;
+	}
+	return max;
+}
+int rec(int a, int b) {
+	if (b == 0) {
+		return a;
+	}
+	else {
+		rec(b, a % b);
+	}
+}
+int main() {
+	
+	
+	int n1, n2;
+	n1 = 162;
+	n2 = 162;
+	
+	int k, i, nsd;
+	nsd = 1;
+	i=min(n1, n2);
+
+	auto start =std::chrono::system_clock::now();
+	for (int t = 0; t != 1; i--) {
+		if (n1 % i == 0 && n2 % i == 0) {
+			nsd = i;
+			t = 1;
+		}
+	}
+	 auto end = std::chrono::system_clock::now();
+	 chrono::duration<double> elapsed_seconds = end - start;
+	cout << "Algorithm brute force  NSD = " << nsd<<" Time complexity = "<< elapsed_seconds.count() * 1e9<< endl<<endl;
+
+	i = min(n1, n2);
+	
+	int b, c;
+	b = max(n1, n2);
+
+	start = std::chrono::system_clock::now();
+	while (i != 0) {
+		c = b % i;
+		b = i;
+		i = c;
+	}
+
+	 end = std::chrono::system_clock::now();
+	 elapsed_seconds = end - start;
+	cout << "Evclid iter NSD = " << b << " Time complexity = " << elapsed_seconds.count() * 1e9 << endl<<endl;
+		
+	i = min(n1, n2);
+	b = max(n1, n2);
+	start = std::chrono::system_clock::now();
+	int p = rec(n1, n2);
+	 end = std::chrono::system_clock::now();
+	 elapsed_seconds = end - start;
+	cout <<"Euclid recursive NSD = " <<p<< " Time complexity = " << elapsed_seconds.count() * 1e9 <<endl;
+
+	start = std::chrono::system_clock::now();
+	this_thread::sleep_for(chrono::seconds(1));
+	end = std::chrono::system_clock::now();
+	elapsed_seconds = end - start;
+	cout <<  " 1 second = " << elapsed_seconds.count() * 1e9 << endl;
+
+	return 0;
+}
